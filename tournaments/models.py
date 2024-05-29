@@ -7,11 +7,23 @@ class Tournament(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     attachment = models.FileField(upload_to='attachments/', blank=True, null=True)
-    organizators = models.ManyToManyField(Player, related_name='organizing_t')
-    players = models.ManyToManyField(Player, related_name='tournaments')
 
     def __str__(self):
         return self.name
+
+class TournamentOrganizer(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    organizer = models.ForeignKey(Player, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.organizer} organizing {self.tournament}"
+
+class TournamentPlayer(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.player} in {self.tournament}"
 
 class Round(models.Model):
     name = models.CharField(max_length=100)
@@ -29,8 +41,8 @@ class Match(models.Model):
         return f"Match ID:{self.pk}"
 
 class MatchPlayer(models.Model):
-    match = models.ForeignKey(Match, on_delete=models.CASCADE)
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name="match_rel")
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="player_match")
     score = models.IntegerField(default=0)
 
     def check_player_in_tournament(self):
