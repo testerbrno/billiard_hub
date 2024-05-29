@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BilliardHub</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style_index.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="ball-container">
+            <div class="ball"></div>
+            <div class="content">
+                <h1 class="title">BilliardPortal</h1>
+                <a href="{% url 'model_list' model='Player' %}"> <button class="enter-button">Enter</button> </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

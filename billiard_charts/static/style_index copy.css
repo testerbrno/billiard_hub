@@ -1,0 +1,112 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background-color: #004d00;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.ball-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.ball-container::before {
+    content: '';
+    position: absolute;
+    bottom: 10%;
+    left: 40%;
+    width: 55vw;
+    height: 25vw;
+    background: rgba(0, 0, 0, 0.5);
+    filter: blur(20px);
+    border-radius: 50% 50% 30% 30%;
+    transform: rotate(-30deg);
+    z-index: 0;
+}
+
+.ball {
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #cccccc, #888888);
+    border-radius: 50%;
+    box-shadow: inset -20px -20px 20px rgba(0, 0, 0, 0.3), inset 20px 20px 20px rgba(255, 255, 255, 0.5);
+    position: absolute;
+    z-index: 1;
+    animation: rotateBall 5s linear infinite;
+}
+
+@keyframes rotateBall {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: 7vw;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(90deg, #004d00, #008000, #00cc00);
+    background-size: 400%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: Titleanim 5s ease infinite;
+    text-shadow: 0 1px 0px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes Titleanim {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.enter-button {
+    margin-top: 40px;
+    padding: 10px 20px;
+    font-size: 1.5em;
+    background-color: #004d00;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.enter-button:hover {
+    background-color: #007200;
+}

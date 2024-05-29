@@ -1,0 +1,43 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Attachment</th>
+            <th>Organizators</th>
+            <th>Players</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if object_list %}
+            {% for tournament in object_list %}
+                <tr>
+                    <td>{{ tournament.name }}</td>
+                    <td>{{ tournament.start_date }}</td>
+                    <td>{{ tournament.end_date }}</td>
+                    <td><a href="{{ tournament.attachment.url }}">{{ tournament.attachment.name }}</a></td>
+                    <td>{{ tournament.organizators.username }}</td>
+                    <td>
+                        <ul>
+                            {% for organizator in tournament.organizators.all %}
+                                <li>{{ organizator.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for player in tournament.players.all %}
+                                <li>{{ player.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6">No tournaments available.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>

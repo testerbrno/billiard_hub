@@ -15,12 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from .project_views.model_views import ModelDetailView, ModelListView, ModelUpdateView, ModelDeleteView
+from django.views.generic import TemplateView, ListView
+from players.views import CustomLoginView
+from django.contrib.auth.views import LoginView, LogoutView
+
+model_list_template = "./list/model_list.html"
+model_detail_template = "./detail/model_detail.html"
 
 urlpatterns = [
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('admin/', admin.site.urls),
+    path('login/', CustomLoginView.as_view(template_name="login.html"), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]
 
-admin.site.site_header = "BilliardHub administration"
-# admin.site.site_title = "Administration Portal"
+admin.site.site_header = "BilliardPortal administration"
 admin.site.index_title = "Administration Portal"

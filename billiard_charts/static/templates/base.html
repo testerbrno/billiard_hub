@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billiard charts</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="sidebar">
+        {% include "sidebar.html" %}
+    </div>
+    <div class="navigationbar">
+        {% include "navigationbar.html" %}
+    </div>
+    <div class="mainspace">
+        {% block main_space %}{% endblock main_space %}
+    </div>
+</body>
+</html>

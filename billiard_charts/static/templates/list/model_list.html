@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    {% if request.resolver_match.kwargs.model == "Player" %}
+        {% include "list/player_list_block.html" %}
+    {% elif request.resolver_match.kwargs.model == "Tournament" %}
+        {% include "list/tournament_list_block.html" %}
+    {% elif request.resolver_match.kwargs.model == "Round" %}
+        {% include "list/round_list_block.html" %}
+    {% elif request.resolver_match.kwargs.model == "Match" %}
+        {% include "list/match_list_block.html" %}
+    {% endif %}
+{% endblock main_space %}
