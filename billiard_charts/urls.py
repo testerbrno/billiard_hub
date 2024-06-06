@@ -26,6 +26,7 @@ urlpatterns = [
     path('login/', CustomLoginView.as_view(template_name="login.html"), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path("tournament/", include("tournaments.urls")),
+    path("player/", include("players.urls")),
 ]
 
 admin.site.site_header = "BilliardPortal administration"

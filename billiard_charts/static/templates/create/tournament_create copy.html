@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    <h1>Create Tournament</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th class="l">Field</th>
+                    <th class="r">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for field in form %}
+                    <tr>
+                        <td class="l">{{ field.label_tag }}</td>
+                        <td class="r">
+                            {% if field.name == "organizers" or field.name == "players" %}
+                                {{ field }}
+                                <input type="text" id="{{ field.name }}-search" class="search" placeholder="Search {{ field.name }}">
+                                <ul id="{{ field.name }}-results" class="search-results"></ul>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save</button>
+    </form>
+    <script src="../../static/player_search.js"></script>
+{% endblock main_space %}

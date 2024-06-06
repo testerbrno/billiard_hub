@@ -41,18 +41,20 @@ class Match(models.Model):
         return f"Match ID:{self.pk}"
 
 class MatchPlayer(models.Model):
-    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name="match_rel")
-    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="player_match")
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name="match_players")
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="player_matches")
     score = models.IntegerField(default=0)
 
-    def check_player_in_tournament(self):
-        tournament_players = self.match.round.tournament.players.all()
-        if self.player not in tournament_players:
+    def clean(self):
+        tournament_players = self.match.round.tournament.tournamentplayer_set.all()
+        if self.player not in [tp.player for tp in tournament_players]:
             raise ValidationError("The player is not part of the tournament players")
 
     def save(self, *args, **kwargs):
-        self.check_player_in_tournament()
+        self.full_clean()
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.player.name} in Match ID:{self.match.pk}"
+        return f"{self.player.username} in Match ID:{self.match.pk}"
+    
+# u každého zápasu musí být sledovány i jednotlivé tahy ()

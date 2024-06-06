@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    <h1>Create Tournament</h1>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <form autocomplete="off" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th class="l">Field</th>
+                    <th class="r">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for field in form %}
+                <tr>
+                    <td class="l">{{ field.label_tag }}</td>
+                    <td class="r">
+                        {% if field.name == "organizers" or field.name == "players" %}
+                        <input type="text" id="{{ field.name }}-search" class="search" placeholder="Search {{ field.name }}">
+                        {{ field }}
+                        <ul id="selected-{{ field.name }}">
+                        </ul>
+                            <script>
+                                $(function() {
+                                    $("#{{ field.name }}-search").autocomplete({
+                                      source: "{% url 'player_search' %}",
+                                      minLength: 2, // Minimum characters before triggering autocomplete
+                                      select: function(event, ui) {
+                                        // Update the corresponding form input with the selected item's ID
+                                        $("#id_{{ field.name }}").val(ui.item.id);
+                                  
+                                        // Get the selected player's name
+                                        var selectedPlayerName = ui.item.label;
+                                  
+                                        // Get the container element to append the selected player
+                                        var selectedPlayersContainer = $("#selected-{{ field.name }}");
+                                  
+                                        // Create a new list item element
+                                        var listItem = $("<li>").text(selectedPlayerName);
+                                  
+                                        // Add a remove button to the list item
+                                        var removeButton = $("<button>").text("Remove").click(function() {
+                                          listItem.remove(); // Remove the list item from the DOM
+                                          // Update the form input to remove the selected player
+                                          $("#id_{{ field.name }}").val($("#id_{{ field.name }}").val().replace(ui.item.id + ",", ""));
+                                        });
+                                        listItem.append(removeButton);
+                                  
+                                        // Append the list item to the container
+                                        selectedPlayersContainer.append(listItem);
+                                      }
+                                    });
+                                  });
+                            </script>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save</button>
+    </form>
+{% endblock main_space %}

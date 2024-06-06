@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    <h1>Create Tournament</h1>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <form autocomplete="off" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th class="l">Field</th>
+                    <th class="r">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for field in form %}
+                <tr>
+                    <td class="l">{{ field.label_tag }}</td>
+                    <td class="r">
+                        {% if field.name == "organizers" or field.name == "players" %}
+                            <input type="text" id="{{ field.name }}-search" class="search" placeholder="Search {{ field.name }}">
+                            {{ field }}
+                            <script>
+                                $(function() {
+                                    $("#{{ field.name }}-search").autocomplete({
+                                        source: "{% url 'player_search' %}",
+                                        minLength: 2, // Minimum characters before triggering autocomplete
+                                    });
+                                });
+                            </script>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save</button>
+    </form>
+{% endblock main_space %}

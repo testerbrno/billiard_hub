@@ -1,8 +1,10 @@
 <nav>
+    {% if tournament.id %}
     <ul>
         <li><a href="{% url 'tournament_detail' tournament.id %}">{{ tournament.name }}</a></li>
         {% for round in rounds %}
             <li><a href="{% url 'round_detail' tournament.id round.id %}">{{ round.name }}</a></li>
         {% endfor %}
     </ul>
+    {% endif %}
 </nav>

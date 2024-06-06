@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    {% if object.error_message %}
+        <h2>Error</h2>
+        <p>{{ object.error_message }}</p>
+    {% else %}
+        <h1>Player Detail</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th class="l">Field</th>
+                    <th class="r">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="l">Username</td>
+                    <td class="r">{{ player.username }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Email</td>
+                    <td class="r">{{ player.email }}</td>
+                </tr>
+                <tr>
+                    <td class="l">First Name</td>
+                    <td class="r">{{ player.first_name }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Last Name</td>
+                    <td class="r">{{ player.last_name }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Date Joined</td>
+                    <td class="r">{{ player.date_joined }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Last Login</td>
+                    <td class="r">{{ player.last_login }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Is Active</td>
+                    <td class="r">{{ player.is_active }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Is Staff</td>
+                    <td class="r">{{ player.is_staff }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Is Superuser</td>
+                    <td class="r">{{ player.is_superuser }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Groups</td>
+                    <td class="r">
+                        <ul>
+                            {% for group in player.groups.all %}
+                                <li>{{ group.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="l">User Permissions</td>
+                    <td class="r">
+                        <ul>
+                            {% for perm in player.user_permissions.all %}
+                                <li>{{ perm.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <!-- Add more fields here if needed -->
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock main_space %}

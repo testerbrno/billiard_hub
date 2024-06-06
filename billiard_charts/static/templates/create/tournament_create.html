@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    <h1>Create Tournament</h1>
+    <form autocomplete="off" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th class="l">Field</th>
+                    <th class="r">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for field in form %}
+                <tr>
+                    <td class="l">{{ field.label_tag }}</td>
+                    <td class="r">
+                            {{ field }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save</button>
+    </form>
+{% endblock main_space %}

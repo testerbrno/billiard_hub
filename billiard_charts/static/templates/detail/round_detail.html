@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    {% if object.error_message %}
+        <h2>Error</h2>
+        <p>{{ object.error_message }}</p>
+    {% else %}
+        <h1>Round Detail</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th class="l">Field</th>
+                    <th class="r">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="l">Name</td>
+                    <td class="r">{{ round.name }}</td>
+                </tr>
+                <tr>
+                    <td class="l">Attachment</td>
+                    <td class="r">
+                        {% if round.attachment %}
+                            <a href="{{ round.attachment.url }}">{{ round.attachment.name }}</a>
+                        {% else %}
+                            No attachment available
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="l">Tournament</td>
+                    <td class="r"><a href="{% url 'tournament_detail' round.tournament.pk %}">{{ round.tournament.name }}</a></td>
+                </tr>
+                <tr>
+                    <td class="l">Matches</td>
+                    <td class="r">
+                        <table class="nested-table">
+                            <thead>
+                                <tr>
+                                    <th>Match ID</th>
+                                    <th>Referee</th>
+                                    <th>Player</th>
+                                    <th>Score</th>
+                                    <th>Blabla</th> <!-- Posunutý sloupec -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for match in matches %}
+                                    {% for player in match.players %}
+                                        <tr class=edit-link>
+                                            {% if forloop.first %}
+                                                <td rowspan="{{ match.players.count }}">{{ match.id }}</td>
+                                                <td rowspan="{{ match.players.count }}">{{ match.referee.username }}</td>
+                                            {% endif %}
+                                            <td>{{ player.player.username }}</td>
+                                            <td>{{ player.score }}</td>
+                                            {% if forloop.first %}
+                                                {% if user.is_authenticated and user.username == match.referee.username %}
+                                                    <td class="edit-link" rowspan="{{ match.players.count }}"><a href="#">Edit</a></td> <!-- Prázdný odkaz "Edit" -->
+                                                {% else %}
+                                                    <td rowspan="{{ match.players.count }}"></td> <!-- Prázdný řetězec, pokud uživatel není přihlášený nebo se neshoduje s rozhodčím zápasu -->
+                                                {% endif %}
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock main_space %}

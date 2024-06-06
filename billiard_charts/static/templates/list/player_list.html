@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+
 <table>
     <thead>
         <tr>
@@ -8,6 +12,7 @@
             <th>Staff status</th>
             <th>Active</th>
             <th>Date joined</th>
+            <th>Details</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +25,10 @@
             <td>{% if player.is_staff %}Yes{% else %}No{% endif %}</td>
             <td>{% if player.is_active %}Yes{% else %}No{% endif %}</td>
             <td>{{ player.date_joined }}</td>
+            <td><a href="{% url 'player_detail' player.pk %}">View Details</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+{% endblock main_space %}

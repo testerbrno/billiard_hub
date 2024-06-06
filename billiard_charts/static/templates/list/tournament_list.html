@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+<h1>Tournament List</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tournament in object_list %}
+        <tr>
+            <td>{{ tournament.name }}</td>
+            <td>{{ tournament.start_date }}</td>
+            <td>{{ tournament.end_date }}</td>
+            <td><a href="{% url 'tournament_detail' tournament.pk %}">View Details</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock main_space %}
