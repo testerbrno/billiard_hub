@@ -10,7 +10,7 @@ class TournamentForm(forms.ModelForm):
     )
     players = forms.ModelMultipleChoiceField(
         queryset=Player.objects.all(), 
-        required=True, 
+        required=False, 
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'player-search'})
     )
 

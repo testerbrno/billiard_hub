@@ -10,7 +10,7 @@ urlpatterns = [
 
     # URL patterns for creating and updating tournaments
     path('create/', TournamentCreateView.as_view(template_name="./create/tournament_create.html"), name='tournament_create'),
-    path('<int:pk>/update/', TournamentUpdateView.as_view(template_name="./update/tournament_update.html"), name='tournament_update'),
+    path('<int:pk>/update/', TournamentUpdateView.as_view(template_name="./create/tournament_create.html"), name='tournament_update'),
 
     # URL patterns for creating and updating rounds
     # path('<int:tournament_pk>/round/create/', RoundCreateView.as_view(template_name="./form/round_form.html"), name='round_create'),

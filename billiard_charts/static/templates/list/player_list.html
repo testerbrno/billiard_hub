@@ -7,8 +7,6 @@
         <tr>
             <th>Username</th>
             <th>Email address</th>
-            <th>First name</th>
-            <th>Last name</th>
             <th>Staff status</th>
             <th>Active</th>
             <th>Date joined</th>
@@ -20,8 +18,6 @@
         <tr>
             <td>{{ player.username }}</td>
             <td>{{ player.email }}</td>
-            <td>{{ player.first_name }}</td>
-            <td>{{ player.last_name }}</td>
             <td>{% if player.is_staff %}Yes{% else %}No{% endif %}</td>
             <td>{% if player.is_active %}Yes{% else %}No{% endif %}</td>
             <td>{{ player.date_joined }}</td>

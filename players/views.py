@@ -1,9 +1,11 @@
 from django.views import View
 from django.contrib.auth.views import LoginView
+from django.views.generic import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from .models import Player
+from .forms import PlayerCreationForm, PlayerUpdateForm
 
 class CustomLoginView(LoginView):
     def form_invalid(self, form):
@@ -25,3 +27,13 @@ class PlayerSearchView(View):
 
         results = [{'label': player.username, 'value': player.username, 'id': player.pk} for player in players]
         return JsonResponse(results, safe=False)
+
+class PlayerCreateView(CreateView):
+        model = Player
+        form_class = PlayerCreationForm
+        success_url = reverse_lazy('player_list')
+        
+class PlayerUpdateView(UpdateView):
+        model = Player
+        form_class = PlayerUpdateForm
+        success_url = reverse_lazy('player_list')

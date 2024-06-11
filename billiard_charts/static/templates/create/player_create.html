@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
 {% block main_space %}
-    <h1>Create Tournament</h1>
-    <form id="t-createform" autocomplete="off" method="post" enctype="multipart/form-data">
+    <h1>Register new player</h1>
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
         <table>
-            <script>
-                const tform = document.getElementById("t-createform")
-                console.log(tform)
-            </script>
             <thead>
                 <tr>
                     <th class="l">Field</th>
@@ -20,7 +21,12 @@
                 <tr>
                     <td class="l">{{ field.label_tag }}</td>
                     <td class="r">
-                            {{ field }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="alert alert-danger">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
