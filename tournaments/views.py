@@ -7,69 +7,74 @@ from tournaments.models import Tournament, TournamentPlayer, TournamentOrganizer
 from tournaments.forms import TournamentForm
 from players.models import Player
 
-class TournamentDetailView(DetailView):
-    model = Tournament
-    context_object_name = 'tournament'
-
-    def get_object(self, queryset=None):
+class TournamentContextMixin:
+    def get_tournament(self):
         return Tournament.objects.get(pk=self.kwargs['tournament_pk'])
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        this_tournament = self.get_object()
-        context['rounds'] = this_tournament.round_set.all()
-        context['organizers'] = TournamentOrganizer.objects.filter(tournament=this_tournament).select_related('organizer')
-        context['players'] = TournamentPlayer.objects.filter(tournament=this_tournament).select_related('player')
-        return context
-
-class RoundDetailView(DetailView):
-    model = Round
-    context_object_name = 'round'
-
-    def get_object(self, queryset=None):
+    def get_round(self):
         return Round.objects.get(pk=self.kwargs['round_pk'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        this_round = self.get_object()
-        context['tournament'] = this_round.tournament
-        context['matches'] = Match.objects.filter(round=this_round).select_related('referee')
-        context['rounds'] = this_round.tournament.round_set.all()
-        for one_match in context['matches']:
-            players = MatchPlayer.objects.filter(match=one_match).select_related('player')
-            one_match.players = players if players.exists() else []
+        if 'tournament_pk' in self.kwargs:
+            tournament = self.get_tournament()
+            context['tournament'] = tournament
+            context['rounds'] = tournament.round_set.all()
+            context['organizers'] = TournamentOrganizer.objects.filter(tournament=tournament).select_related('organizer')
+            context['players'] = TournamentPlayer.objects.filter(tournament=tournament).select_related('player')
+        if 'round_pk' in self.kwargs:
+            round_instance = self.get_round()
+            context['round'] = round_instance
+            context['matches'] = Match.objects.filter(round=round_instance).select_related('referee')
+            for one_match in context['matches']:
+                players = MatchPlayer.objects.filter(match=one_match).select_related('player')
+                one_match.players = players if players.exists() else []
         return context
 
-class TournamentCreateView(CreateView):
+class TournamentDetailView(TournamentContextMixin, DetailView):
+    model = Tournament
+    context_object_name = 'tournament'
+
+    def get_object(self, queryset=None):
+        return self.get_tournament()
+
+class RoundDetailView(TournamentContextMixin, DetailView):
+    model = Round
+    context_object_name = 'round'
+
+    def get_object(self, queryset=None):
+        return self.get_round()
+
+class TournamentCreateView(TournamentContextMixin, CreateView):
     model = Tournament
     form_class = TournamentForm
     success_url = reverse_lazy('tournaments')
 
-class TournamentUpdateView(UpdateView):
+class TournamentUpdateView(TournamentContextMixin, UpdateView):
     model = Tournament
     form_class = TournamentForm
 
     def get_success_url(self):
         return reverse('tournament_detail', kwargs={'pk': self.object.pk})
 
-class RoundCreateView(CreateView):
+class RoundCreateView(TournamentContextMixin, CreateView):
     model = Round
     fields = ['name', 'attachment']
 
     def form_valid(self, form):
-        tournament = Tournament.objects.get(pk=self.kwargs['tournament_pk'])
+        tournament = self.get_tournament()
         form.instance.tournament = tournament
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('tournament_detail', kwargs={'tournament_pk': self.object.tournament.pk})
 
-class MatchCreateView(CreateView):
+class MatchCreateView(TournamentContextMixin, CreateView):
     model = Match
     fields = ['referee']
 
     def form_valid(self, form):
-        round_instance = Round.objects.get(pk=self.kwargs['round_pk'])
+        round_instance = self.get_round()
         form.instance.round = round_instance
         return super().form_valid(form)
 
@@ -102,13 +107,30 @@ class MatchPlayerValidationMixin:
             'round_pk': self.object.match.round.pk
         })
 
-class MatchPlayerCreateView(MatchPlayerValidationMixin, CreateView):
+class MatchPlayerCreateView(TournamentContextMixin, MatchPlayerValidationMixin, CreateView):
     model = MatchPlayer
     fields = ['player', 'score']
 
-class MatchPlayerUpdateView(MatchPlayerValidationMixin, UpdateView):
+class MatchPlayerUpdateView(TournamentContextMixin, MatchPlayerValidationMixin, UpdateView):
     model = MatchPlayer
     fields = ['player', 'score']
 
     def get_object(self, queryset=None):
         return MatchPlayer.objects.get(pk=self.kwargs['matchplayer_pk'])
+
+class RoundUpdateView(TournamentContextMixin, UpdateView):
+    model = Round
+    fields = ['name', 'attachment']
+    context_object_name = 'round'
+
+    def get_object(self, queryset=None):
+        return self.get_round()
+
+    def form_valid(self, form):
+        # Aktualizujeme turnaj, pokud je to potřeba
+        tournament = self.get_tournament()
+        form.instance.tournament = tournament
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('tournament_detail', kwargs={'tournament_pk': self.object.tournament.pk})

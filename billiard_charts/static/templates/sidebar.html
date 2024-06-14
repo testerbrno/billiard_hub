@@ -1,5 +1,5 @@
 <nav>
-    {% if tournament.id %}
+    {% if tournament %}
     <ul>
         <li><a href="{% url 'tournament_detail' tournament.id %}">{{ tournament.name }}</a></li>
         {% for round in rounds %}

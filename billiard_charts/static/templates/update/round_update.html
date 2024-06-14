@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    <h1>Update player</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div>
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        <table>
+            <thead>
+                <tr>
+                    <th class="l">Field</th>
+                    <th class="r">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for field in form %}
+                <tr>
+                    <td class="l">{{ field.label_tag }}</td>
+                    <td class="r">
+                        {{ field }}
+                        {% if field.errors %}
+                            <div>
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save</button>
+    </form>
+{% endblock main_space %}
