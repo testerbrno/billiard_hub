@@ -1,0 +1,17 @@
+<table>
+    <thead>
+        <tr>
+            <th class="l">Field</th>
+            <th class="r">Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for field in form %}
+            <tr>
+                <td class="l">{{ field.label_tag }}</td>
+                <td class="r">{{ field }}</td>
+            </tr>
+        {% endfor %}
+        <button type="submit">Save</button>
+    </tbody>
+</table>

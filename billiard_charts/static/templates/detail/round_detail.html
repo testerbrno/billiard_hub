@@ -42,28 +42,41 @@
                                     <th>Referee</th>
                                     <th>Player</th>
                                     <th>Score</th>
-                                    <th>Blabla</th> <!-- Posunutý sloupec -->
+                                    <th>Blabla</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for match in matches %}
-                                    {% for player in match.players %}
-                                        <tr class=edit-link>
-                                            {% if forloop.first %}
-                                                <td rowspan="{{ match.players.count }}">{{ match.id }}</td>
-                                                <td rowspan="{{ match.players.count }}">{{ match.referee.username }}</td>
-                                            {% endif %}
-                                            <td>{{ player.player.username }}</td>
-                                            <td>{{ player.score }}</td>
-                                            {% if forloop.first %}
-                                                {% if user.is_authenticated and user.username == match.referee.username %}
-                                                    <td class="edit-link" rowspan="{{ match.players.count }}"><a href="#">Edit</a></td> <!-- Prázdný odkaz "Edit" -->
-                                                {% else %}
-                                                    <td rowspan="{{ match.players.count }}"></td> <!-- Prázdný řetězec, pokud uživatel není přihlášený nebo se neshoduje s rozhodčím zápasu -->
+                                    {% if match.players %}
+                                        {% for player in match.players %}
+                                            <tr class=edit-link>
+                                                {% if forloop.first %}
+                                                    <td rowspan="{{ match.players.count }}">{{ match.id }}</td>
+                                                    <td rowspan="{{ match.players.count }}">{{ match.referee.username }}</td>
                                                 {% endif %}
+                                                <td>{{ player.player.username }}</td>
+                                                <td>{{ player.score }}</td>
+                                                {% if forloop.first %}
+                                                    {% if user.is_authenticated and user.username == match.referee.username %}
+                                                        <td class="edit-link" rowspan="{{ match.players.count }}"><a href="#">Edit</a></td>
+                                                    {% else %}
+                                                        <td rowspan="{{ match.players.count }}"></td>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td>{{ match.id }}</td>
+                                            <td>{{ match.referee.username }}</td>
+                                            <td colspan="3">No players assigned</td>
+                                            {% if user.is_authenticated and user.username == match.referee.username %}
+                                                <td class="edit-link"><a href="#">Edit</a></td>
+                                            {% else %}
+                                                <td></td>
                                             {% endif %}
                                         </tr>
-                                    {% endfor %}
+                                    {% endif %}
                                 {% endfor %}
                             </tbody>
                         </table>

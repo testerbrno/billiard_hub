@@ -116,11 +116,32 @@ AUTH_USER_MODEL = 'players.Player'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Prague'
 
 USE_I18N = True
 
 USE_TZ = True
+
+DATETIME_FORMAT = 'd.m.Y H:i:s'
+DATE_FORMAT = 'd.m.Y'
+TIME_FORMAT = 'H:i:s'
+
+# Input formats for forms
+DATETIME_INPUT_FORMATS = [
+    '%d.%m.%Y %H:%M:%S',
+    '%d.%m.%Y %H:%M',
+    '%Y-%m-%d %H:%M:%S',
+    '%Y-%m-%d %H:%M',
+    '%Y-%m-%dT%H:%M',   # HTML5 format
+]
+DATE_INPUT_FORMATS = [
+    '%d.%m.%Y',
+    '%Y-%m-%d',
+]
+TIME_INPUT_FORMATS = [
+    '%H:%M:%S',
+    '%H:%M',
+]
 
 
 # Static files (CSS, JavaScript, Images)

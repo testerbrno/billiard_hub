@@ -1,0 +1,14 @@
+<h3>Players</h3>
+<table id="players-table">
+    {{ players.management_form }}
+    {% for form in players %}
+        <tr>
+            <td class="l">{{ form.player.label_tag }}</td>
+            <td class="r">{{ form.player }}</td>
+            <td><button type="button" class="remove-player" hx-get="{% url 'remove_player_form' %}" hx-target="#players-table" hx-swap="outerHTML">Remove</button></td>
+        </tr>
+    {% endfor %}
+</table>
+<button type="button" hx-get="{% url 'add_player_form' %}" hx-target="#players-table" hx-swap="beforeend">Add Player</button>
+
+<button type="submit">Save</button>

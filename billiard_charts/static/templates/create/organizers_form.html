@@ -1,0 +1,15 @@
+<h3>Organizers</h3>
+<table id="organizers-table">
+    {{ organizers.management_form }}
+    {% for form in organizers %}
+        <tr>
+            <td class="l">{{ form.organizer.label_tag }}</td>
+            <td class="r">{{ form.organizer }}</td>
+            <td><button type="button" class="remove-organizer" hx-get="{% url 'remove_organizer_form' %}" hx-target="#organizers-table" hx-swap="outerHTML">Remove</button></td>
+        </tr>
+    {% endfor %}
+</table>
+<button type="button" hx-get="{% url 'add_organizer_form' %}" hx-target="#organizers-table" hx-swap="beforeend">Add Organizer</button>
+
+
+<button type="submit">Save</button>

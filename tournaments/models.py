@@ -45,11 +45,6 @@ class MatchPlayer(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="player_matches")
     score = models.IntegerField(default=0)
 
-    def clean(self):
-        tournament_players = self.match.round.tournament.tournamentplayer_set.all()
-        if self.player not in [tp.player for tp in tournament_players]:
-            raise ValidationError("The player is not part of the tournament players")
-
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
