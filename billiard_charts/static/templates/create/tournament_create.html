@@ -4,34 +4,39 @@
     <h1>Create Tournament</h1>
     <form id="t-createform" autocomplete="off" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% if form.non_field_errors %}
-            <div class="error">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
-        <table>
-            <thead>
-                <tr>
-                    <th class="l">Field</th>
-                    <th class="r">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for field in form %}
-                    <tr>
-                        <td class="l">{{ field.label_tag }}</td>
-                        <td class="r">
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="error">
-                                    {{ field.errors }}
-                                </div>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
+        <h2>Tournament Details</h2>
+        <table id="tournament-forms" hx-get="{% url 'add_form' 'tournament' %}" hx-trigger="load" hx-target="#tournament-forms" hx-swap="innerHTML">
+            <!-- Zde se budou přidávat dynamické formuláře pro turnaje -->
         </table>
+
+        <h2>Organizers</h2>
+        <table id="organizer-forms">
+            <!-- Zde se budou přidávat dynamické formuláře pro organizátory -->
+        </table>
+        <button type="button" hx-get="{% url 'add_form' 'organizer' %}" hx-target="#organizer-forms" hx-swap="beforeend">Add Organizer</button>
+
+        <h2>Players</h2>
+        <table id="player-forms">
+            <!-- Zde se budou přidávat dynamické formuláře pro hráče -->
+        </table>
+        <button type="button" hx-get="{% url 'add_form' 'player' %}" hx-target="#player-forms" hx-swap="beforeend">Add Player</button>
+
+        <h2>Rounds</h2>
+        <table id="round-forms">
+            <!-- Zde se budou přidávat dynamické formuláře pro kola -->
+        </table>
+        <button type="button" hx-get="{% url 'add_form' 'round' %}" hx-target="#round-forms" hx-swap="beforeend">Add Round</button>
+
         <button type="submit">Save</button>
     </form>
+    {% if errors %}
+        <div class="errors">
+            <h2>Form Errors:</h2>
+            <ul>
+            {% for form_type, error_list in errors.items %}
+                <li><strong>{{ form_type }}</strong>: {{ error_list }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock main_space %}

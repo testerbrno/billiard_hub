@@ -1,0 +1,78 @@
+toto je obsah request.POST(130): <QueryDict: {'csrfmiddlewaretoken': ['KSULKb5NxqjN7LnlfZBGwybpaR4mLhwzvdvyucvDAmU8zz5bTNaVoJryu0bXjmI3'], 'match_39-referee': ['1'], 'competitor_40-player': ['2'], 'competitor_40-score': ['0'], 'competitor_41-player': ['3'], 'competitor_41-score': ['0']}>
+toto je obsah related_form(138): <div>
+    <label for="id_referee">Referee:</label>
+
+
+
+<select name="referee" required id="id_referee">
+  <option value="">---------</option>
+
+  <option value="1" selected>admin@admin.com</option>
+
+  <option value="2">player1@player1.com</option>
+
+  <option value="3">player2@player2.com</option>
+
+  <option value="4">zplayer@zplayer.com</option>
+
+</select>
+    
+      
+    
+</div>
+jsem tady v is_valid
+toto je obsah related_instance(142): Match ID:None
+toto je obsah related_form(138): <div>
+    <label for="id_player">Player:</label>
+
+
+
+<select name="player" required id="id_player">
+  <option value="">---------</option>
+
+  <option value="1">admin@admin.com</option>
+
+  <option value="2">player1@player1.com</option>
+
+  <option value="3" selected>player2@player2.com</option>
+
+  <option value="4">zplayer@zplayer.com</option>
+
+</select>
+    
+</div>
+
+  <div>
+    <label for="id_score">Score:</label>
+
+
+
+<input type="number" name="score" value="0" required id="id_score">
+    
+      
+    
+</div>
+jsem tady v is_valid
+Internal Server Error: /tournament/1/1/Match/create/
+Traceback (most recent call last):
+  File "/home/programovani/Dokumenty/programs/kurz/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/programovani/Dokumenty/programs/kurz/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/programovani/Dokumenty/programs/kurz/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/programovani/Dokumenty/programs/kurz/.venv/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/programovani/Dokumenty/programs/kurz/billiard_charts/tournaments/views.py", line 155, in post
+    print(f"toto je obsah related_instance(142): {related_instance}")
+                                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/programovani/Dokumenty/programs/kurz/billiard_charts/tournaments/models.py", line 53, in __str__
+    return f"{self.player.username} in Match ID:{self.match.pk}"
+                                                 ^^^^^^^^^^
+  File "/home/programovani/Dokumenty/programs/kurz/.venv/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 264, in __get__
+    raise self.RelatedObjectDoesNotExist(
+tournaments.models.MatchPlayer.match.RelatedObjectDoesNotExist: MatchPlayer has no match.

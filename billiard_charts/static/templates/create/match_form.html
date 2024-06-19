@@ -4,34 +4,28 @@
     <h1>Create Match</h1>
     <form id="t-createform" autocomplete="off" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% if form.non_field_errors %}
-            <div class="error">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
-        <table>
-            <thead>
-                <tr>
-                    <th class="l">Field</th>
-                    <th class="r">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for field in form %}
-                    <tr>
-                        <td class="l">{{ field.label_tag }}</td>
-                        <td class="r">
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="error">
-                                    {{ field.errors }}
-                                </div>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
+        <h2>Match Details</h2>
+        <table id="match-forms" hx-get="{% url 'add_form' 'match' %}" hx-trigger="load" hx-target="#match-forms" hx-swap="innerHTML">
+            <!-- Zde se budou přidávat dynamické formuláře pro turnaje -->
         </table>
+
+        <h2>Players</h2>
+        <table id="competitor-forms">
+            <!-- Zde se budou přidávat dynamické formuláře pro hráče -->
+        </table>
+        <button type="button" hx-get="{% url 'add_form' 'competitor' %}" hx-target="#competitor-forms" hx-swap="beforeend">Add Player</button>
+
         <button type="submit">Save</button>
     </form>
+    {% if errors %}
+        <div class="errors">
+            <h2>Form Errors:</h2>
+            <ul>
+            {% for form_type, error_list in errors.items %}
+                <li><strong>{{ form_type }}</strong>: {{ error_list }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 {% endblock main_space %}
+

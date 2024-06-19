@@ -16,14 +16,14 @@ class TournamentOrganizer(models.Model):
     organizer = models.ForeignKey(Player, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.organizer} organizing {self.tournament}"
+        return f"{self.organizer}"
 
 class TournamentPlayer(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.player} in {self.tournament}"
+        return f"{self.player}"
 
 class Round(models.Model):
     name = models.CharField(max_length=100)

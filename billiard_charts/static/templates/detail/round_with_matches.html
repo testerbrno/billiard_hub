@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block main_space %}
+    {% if object.error_message %}
+        <h2>Error</h2>
+        <p>{{ object.error_message }}</p>
+    {% else %}
+        <h1>Round Detail</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th class="l">Field</th>
+                    <th class="r">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% include "./round_detail.html" %}
+            </tbody>
+        </table>
+        <h1>Matches</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Match ID</th>
+                    <th>Referee</th>
+                    <th>Player</th>
+                    <th>Score</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% include "./matches_detail.html" %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock main_space %}

@@ -22,7 +22,6 @@ class PlayerSearchView(View):
         try:
             players = (Player.objects.filter(username__icontains=search_term) | Player.objects.filter(email__icontains=search_term))[:10]
         except Exception as e:
-            print(f"Error during search: {e}")
             return JsonResponse({'error': 'An error occurred during search'}, status=500)
 
         results = [{'label': player.username, 'value': player.username, 'id': player.pk} for player in players]

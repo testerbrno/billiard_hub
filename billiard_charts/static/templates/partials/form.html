@@ -1,0 +1,41 @@
+<table>
+    <thead>
+        <tr>
+            <th class="l">Field</th>
+            <th class="r">Value</th>
+            {% if 'tournament' not in form.prefix %}
+            <th class="r">Action</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% if form.non_field_errors %}
+            <div class="error">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        <tr id="form-{{ form.prefix }}">
+            {% for field in form %}
+                <tr>
+                    <td class="l">{{ field.label_tag }}</td>
+                    <td class="r">
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="error">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    {% if 'tournament' not in form.prefix %}
+                    <td class="r">
+                        <button
+                            hx-delete="{% url 'delete_form' %}" 
+                            hx-target="closest table"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>Delete</button>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>

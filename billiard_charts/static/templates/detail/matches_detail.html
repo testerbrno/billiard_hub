@@ -1,0 +1,32 @@
+{% for match in matches %}
+    {% if match.players %}
+        {% for player in match.players %}
+            <tr class="edit-link">
+                {% if forloop.first %}
+                    <td rowspan="{{ match.players.count }}">{{ match.id }}</td>
+                    <td rowspan="{{ match.players.count }}">{{ match.referee.username }}</td>
+                {% endif %}
+                <td>{{ player.player.username }}</td>
+                <td>{{ player.score }}</td>
+                {% if forloop.first %}
+                    {% if user.is_authenticated and user.username == match.referee.username %}
+                        <td class="edit-link" rowspan="{{ match.players.count }}"><a href="#">Edit</a></td>
+                    {% else %}
+                        <td rowspan="{{ match.players.count }}"></td>
+                    {% endif %}
+                {% endif %}
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td>{{ match.id }}</td>
+            <td>{{ match.referee.username }}</td>
+            <td colspan="3">No players assigned</td>
+            {% if user.is_authenticated and user.username == match.referee.username %}
+                <td class="edit-link"><a href="#">Edit</a></td>
+            {% else %}
+                <td></td>
+            {% endif %}
+        </tr>
+    {% endif %}
+{% endfor %}
